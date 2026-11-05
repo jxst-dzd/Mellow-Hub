@@ -1,1 +1,2 @@
+print("hi loading")
 loadstring(game:HttpGet("https://mellow-hub-official.vercel.app/loader.lua"))()
