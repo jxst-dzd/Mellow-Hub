@@ -1,6 +1,6 @@
 --[[
     ════════════════════════════════════════════════════════════════════════════
-    MELLOW HUB — OFFICIAL KEY SYSTEM (v2.5)
+    MELLOW HUB — OFFICIAL KEY SYSTEM (v2.5) • LUXURY EDITION
     ════════════════════════════════════════════════════════════════════════════
     Project    : Mellow Hub
     Gateway    : FlowAuth (Project ID: 7664)
@@ -149,13 +149,13 @@ getgenv().MellowKeyGui = KeyGui
 
 local Camera = workspace.CurrentCamera
 local ViewportSize = Camera and Camera.ViewportSize or Vector2.new(1280, 720)
-local HolderWidth = math.min(360, ViewportSize.X * 0.92)
+local HolderWidth = math.min(380, ViewportSize.X * 0.94)
 
 local Backdrop = Instance.new("Frame")
 Backdrop.Name = "Backdrop"
 Backdrop.Size = UDim2.new(1, 0, 1, 0)
-Backdrop.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-Backdrop.BackgroundTransparency = 0.5
+Backdrop.BackgroundColor3 = Color3.fromRGB(4, 6, 10)
+Backdrop.BackgroundTransparency = 0.45
 Backdrop.BorderSizePixel = 0
 Backdrop.Parent = KeyGui
 
@@ -165,11 +165,24 @@ Holder.AnchorPoint = Vector2.new(0.5, 0.5)
 Holder.Position = UDim2.new(0.5, 0, 0.5, 0)
 Holder.Size = UDim2.new(0, HolderWidth, 0, 0)
 Holder.AutomaticSize = Enum.AutomaticSize.Y
-Holder.BackgroundColor3 = Color3.fromRGB(13, 16, 24)
+Holder.BackgroundColor3 = Color3.fromRGB(11, 14, 22)
 Holder.BackgroundTransparency = 0.04
 Holder.BorderSizePixel = 0
 Holder.ClipsDescendants = false
 Holder.Parent = Backdrop
+
+-- Atmospheric Halo Glow Behind Holder
+local HolderGlow = Instance.new("ImageLabel")
+HolderGlow.Name = "HolderGlow"
+HolderGlow.AnchorPoint = Vector2.new(0.5, 0.5)
+HolderGlow.Position = UDim2.new(0.5, 0, 0.5, 0)
+HolderGlow.Size = UDim2.new(1.22, 0, 1.25, 0)
+HolderGlow.BackgroundTransparency = 1
+HolderGlow.Image = CONFIG.GlowAsset
+HolderGlow.ImageColor3 = Color3.fromRGB(139, 92, 246)
+HolderGlow.ImageTransparency = 0.82
+HolderGlow.ZIndex = 0
+HolderGlow.Parent = Holder
 
 -- Responsive Scale
 local UiScale = Instance.new("UIScale")
@@ -184,41 +197,49 @@ else
 end
 
 local HolderCorner = Instance.new("UICorner")
-HolderCorner.CornerRadius = UDim.new(0, 16)
+HolderCorner.CornerRadius = UDim.new(0, 18)
 HolderCorner.Parent = Holder
 
+-- Luxury Gradient Stroke
 local HolderStroke = Instance.new("UIStroke")
-HolderStroke.Thickness = 1.3
-HolderStroke.Color = Color3.fromRGB(56, 189, 248)
+HolderStroke.Thickness = 1.2
+HolderStroke.Color = Color3.fromRGB(139, 92, 246)
+HolderStroke.Transparency = 0.45
 HolderStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
 HolderStroke.Parent = Holder
 
 local StrokeGrad = Instance.new("UIGradient")
 StrokeGrad.Color = ColorSequence.new({
-    ColorSequenceKeypoint.new(0.00, Color3.fromRGB(56, 189, 248)),
-    ColorSequenceKeypoint.new(0.45, Color3.fromRGB(139, 92, 246)),
-    ColorSequenceKeypoint.new(0.75, Color3.fromRGB(236, 72, 153)),
-    ColorSequenceKeypoint.new(1.00, Color3.fromRGB(56, 189, 248)),
+    ColorSequenceKeypoint.new(0.00, Color3.fromRGB(168, 85, 247)),
+    ColorSequenceKeypoint.new(0.50, Color3.fromRGB(56, 189, 248)),
+    ColorSequenceKeypoint.new(1.00, Color3.fromRGB(168, 85, 247)),
 })
-StrokeGrad.Rotation = 45
+StrokeGrad.Rotation = 35
 StrokeGrad.Parent = HolderStroke
 
+-- Sleek 2px Top Light Bar with Soft Transparency Fade
 local TopAccent = Instance.new("Frame")
 TopAccent.Name = "TopAccent"
-TopAccent.Size = UDim2.new(1, 0, 0, 3)
+TopAccent.Size = UDim2.new(1, -28, 0, 2)
+TopAccent.Position = UDim2.new(0, 14, 0, 1)
 TopAccent.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 TopAccent.BorderSizePixel = 0
 TopAccent.Parent = Holder
 
 local TopAccentCorner = Instance.new("UICorner")
-TopAccentCorner.CornerRadius = UDim.new(0, 16)
+TopAccentCorner.CornerRadius = UDim.new(1, 0)
 TopAccentCorner.Parent = TopAccent
 
 local TopAccentGrad = Instance.new("UIGradient")
 TopAccentGrad.Color = ColorSequence.new({
-    ColorSequenceKeypoint.new(0, Color3.fromRGB(56, 189, 248)),
-    ColorSequenceKeypoint.new(0.5, Color3.fromRGB(139, 92, 246)),
-    ColorSequenceKeypoint.new(1, Color3.fromRGB(236, 72, 153))
+    ColorSequenceKeypoint.new(0.0, Color3.fromRGB(139, 92, 246)),
+    ColorSequenceKeypoint.new(0.5, Color3.fromRGB(56, 189, 248)),
+    ColorSequenceKeypoint.new(1.0, Color3.fromRGB(139, 92, 246))
+})
+TopAccentGrad.Transparency = NumberSequence.new({
+    NumberSequenceKeypoint.new(0.0, 0.7),
+    NumberSequenceKeypoint.new(0.5, 0.1),
+    NumberSequenceKeypoint.new(1.0, 0.7)
 })
 TopAccentGrad.Parent = TopAccent
 
@@ -228,57 +249,94 @@ Content.Size = UDim2.new(1, 0, 0, 0)
 Content.AutomaticSize = Enum.AutomaticSize.Y
 Content.BackgroundTransparency = 1
 Content.BorderSizePixel = 0
+Content.ZIndex = 1
 Content.Parent = Holder
 
 local ContentLayout = Instance.new("UIListLayout")
 ContentLayout.SortOrder = Enum.SortOrder.LayoutOrder
-ContentLayout.Padding = UDim.new(0, 8)
+ContentLayout.Padding = UDim.new(0, 10)
 ContentLayout.Parent = Content
 
 local ContentPadding = Instance.new("UIPadding")
-ContentPadding.PaddingTop = UDim.new(0, 12)
+ContentPadding.PaddingTop = UDim.new(0, 14)
 ContentPadding.PaddingBottom = UDim.new(0, 14)
-ContentPadding.PaddingLeft = UDim.new(0, 14)
-ContentPadding.PaddingRight = UDim.new(0, 14)
+ContentPadding.PaddingLeft = UDim.new(0, 16)
+ContentPadding.PaddingRight = UDim.new(0, 16)
 ContentPadding.Parent = Content
 
 -- Header Section
 local HeaderSection = Instance.new("Frame")
 HeaderSection.Name = "HeaderSection"
-HeaderSection.Size = UDim2.new(1, 0, 0, 26)
+HeaderSection.Size = UDim2.new(1, 0, 0, 30)
 HeaderSection.BackgroundTransparency = 1
 HeaderSection.LayoutOrder = 1
 HeaderSection.Parent = Content
 
+-- Logo Squircle Container
+local LogoContainer = Instance.new("Frame")
+LogoContainer.Name = "LogoContainer"
+LogoContainer.Size = UDim2.new(0, 30, 0, 30)
+LogoContainer.Position = UDim2.new(0, 0, 0.5, -15)
+LogoContainer.BackgroundColor3 = Color3.fromRGB(20, 25, 38)
+LogoContainer.BorderSizePixel = 0
+LogoContainer.Parent = HeaderSection
+
+local LogoContainerCorner = Instance.new("UICorner")
+LogoContainerCorner.CornerRadius = UDim.new(0, 9)
+LogoContainerCorner.Parent = LogoContainer
+
+local LogoContainerStroke = Instance.new("UIStroke")
+LogoContainerStroke.Thickness = 1
+LogoContainerStroke.Color = Color3.fromRGB(139, 92, 246)
+LogoContainerStroke.Transparency = 0.55
+LogoContainerStroke.Parent = LogoContainer
+
 local Logo = Instance.new("ImageLabel")
 Logo.Name = "Logo"
-Logo.Size = UDim2.new(0, 26, 0, 26)
-Logo.Position = UDim2.new(0, 0, 0.5, -13)
+Logo.AnchorPoint = Vector2.new(0.5, 0.5)
+Logo.Position = UDim2.new(0.5, 0, 0.5, 0)
+Logo.Size = UDim2.new(0, 20, 0, 20)
 Logo.BackgroundTransparency = 1
 Logo.Image = CONFIG.MellowLogo
-Logo.Parent = HeaderSection
+Logo.ScaleType = Enum.ScaleType.Fit
+Logo.Parent = LogoContainer
 
-local LogoCorner = Instance.new("UICorner")
-LogoCorner.CornerRadius = UDim.new(0, 8)
-LogoCorner.Parent = Logo
+local HeaderTitleGroup = Instance.new("Frame")
+HeaderTitleGroup.Name = "HeaderTitleGroup"
+HeaderTitleGroup.Position = UDim2.new(0, 38, 0.5, -13)
+HeaderTitleGroup.Size = UDim2.new(0, 140, 0, 26)
+HeaderTitleGroup.BackgroundTransparency = 1
+HeaderTitleGroup.Parent = HeaderSection
 
 local HeaderTitle = Instance.new("TextLabel")
 HeaderTitle.Name = "HeaderTitle"
-HeaderTitle.Text = "Key System"
+HeaderTitle.Text = "Mellow<font color=\"#a78bfa\">Hub</font>"
+HeaderTitle.RichText = true
 HeaderTitle.Font = Enum.Font.GothamBold
-HeaderTitle.TextSize = 13.5
+HeaderTitle.TextSize = 14
 HeaderTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
 HeaderTitle.TextXAlignment = Enum.TextXAlignment.Left
-HeaderTitle.Position = UDim2.new(0, 34, 0.5, -10)
-HeaderTitle.Size = UDim2.new(0, 90, 0, 20)
+HeaderTitle.Size = UDim2.new(1, 0, 0, 16)
 HeaderTitle.BackgroundTransparency = 1
-HeaderTitle.Parent = HeaderSection
+HeaderTitle.Parent = HeaderTitleGroup
+
+local HeaderSub = Instance.new("TextLabel")
+HeaderSub.Name = "HeaderSub"
+HeaderSub.Text = "KEY GATEWAY"
+HeaderSub.Font = Enum.Font.GothamBold
+HeaderSub.TextSize = 8.5
+HeaderSub.TextColor3 = Color3.fromRGB(100, 116, 139)
+HeaderSub.TextXAlignment = Enum.TextXAlignment.Left
+HeaderSub.Position = UDim2.new(0, 0, 0, 14)
+HeaderSub.Size = UDim2.new(1, 0, 0, 11)
+HeaderSub.BackgroundTransparency = 1
+HeaderSub.Parent = HeaderTitleGroup
 
 local VersionPill = Instance.new("Frame")
 VersionPill.Name = "VersionPill"
-VersionPill.Size = UDim2.new(0, 42, 0, 18)
-VersionPill.Position = UDim2.new(0, 122, 0.5, -9)
-VersionPill.BackgroundColor3 = Color3.fromRGB(14, 56, 76)
+VersionPill.Size = UDim2.new(0, 48, 0, 20)
+VersionPill.Position = UDim2.new(0, 160, 0.5, -10)
+VersionPill.BackgroundColor3 = Color3.fromRGB(22, 28, 44)
 VersionPill.BorderSizePixel = 0
 VersionPill.Parent = HeaderSection
 
@@ -286,31 +344,67 @@ local PillCorner = Instance.new("UICorner")
 PillCorner.CornerRadius = UDim.new(1, 0)
 PillCorner.Parent = VersionPill
 
+local PillStroke = Instance.new("UIStroke")
+PillStroke.Thickness = 1
+PillStroke.Color = Color3.fromRGB(56, 189, 248)
+PillStroke.Transparency = 0.55
+PillStroke.Parent = VersionPill
+
 local PillText = Instance.new("TextLabel")
 PillText.Name = "PillText"
-PillText.Text = CONFIG.Version
+PillText.Text = "● " .. CONFIG.Version
 PillText.Font = Enum.Font.GothamBold
-PillText.TextSize = 10
+PillText.TextSize = 9.5
 PillText.TextColor3 = Color3.fromRGB(56, 189, 248)
 PillText.Size = UDim2.new(1, 0, 1, 0)
 PillText.BackgroundTransparency = 1
 PillText.Parent = VersionPill
 
+-- Close Button (FIXED: Uses clean 'X' with GothamBold + hover effect)
 local CloseBtn = Instance.new("TextButton")
 CloseBtn.Name = "CloseBtn"
-CloseBtn.Text = "✕"
+CloseBtn.Text = "X"
 CloseBtn.Font = Enum.Font.GothamBold
-CloseBtn.TextSize = 13
+CloseBtn.TextSize = 11.5
 CloseBtn.TextColor3 = Color3.fromRGB(148, 163, 184)
 CloseBtn.Size = UDim2.new(0, 26, 0, 26)
 CloseBtn.Position = UDim2.new(1, -26, 0.5, -13)
 CloseBtn.BackgroundColor3 = Color3.fromRGB(20, 25, 38)
 CloseBtn.BorderSizePixel = 0
+CloseBtn.AutoButtonColor = false
 CloseBtn.Parent = HeaderSection
 
 local CloseCorner = Instance.new("UICorner")
 CloseCorner.CornerRadius = UDim.new(0, 8)
 CloseCorner.Parent = CloseBtn
+
+local CloseStroke = Instance.new("UIStroke")
+CloseStroke.Thickness = 1
+CloseStroke.Color = Color3.fromRGB(45, 55, 80)
+CloseStroke.Transparency = 0.6
+CloseStroke.Parent = CloseBtn
+
+CloseBtn.MouseEnter:Connect(function()
+    TweenService:Create(CloseBtn, TweenInfo.new(0.18), {
+        BackgroundColor3 = Color3.fromRGB(239, 68, 68),
+        TextColor3 = Color3.fromRGB(255, 255, 255)
+    }):Play()
+    TweenService:Create(CloseStroke, TweenInfo.new(0.18), {
+        Color = Color3.fromRGB(239, 68, 68),
+        Transparency = 0
+    }):Play()
+end)
+
+CloseBtn.MouseLeave:Connect(function()
+    TweenService:Create(CloseBtn, TweenInfo.new(0.18), {
+        BackgroundColor3 = Color3.fromRGB(20, 25, 38),
+        TextColor3 = Color3.fromRGB(148, 163, 184)
+    }):Play()
+    TweenService:Create(CloseStroke, TweenInfo.new(0.18), {
+        Color = Color3.fromRGB(45, 55, 80),
+        Transparency = 0.6
+    }):Play()
+end)
 
 CloseBtn.MouseButton1Click:Connect(function()
     TweenService:Create(Holder, TweenInfo.new(0.22, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
@@ -362,110 +456,102 @@ TitleSection.Parent = Content
 
 local WelcomeHeader = Instance.new("TextLabel")
 WelcomeHeader.Name = "WelcomeHeader"
-WelcomeHeader.Text = "WELCOME TO <font color=\"#38bdf8\">Mellow Hub</font>"
+WelcomeHeader.Text = "Unlock <font color=\"#38bdf8\">Mellow Hub</font>"
 WelcomeHeader.RichText = true
 WelcomeHeader.Font = Enum.Font.GothamBold
-WelcomeHeader.TextSize = 18
+WelcomeHeader.TextSize = 17
 WelcomeHeader.TextColor3 = Color3.fromRGB(255, 255, 255)
 WelcomeHeader.TextXAlignment = Enum.TextXAlignment.Left
-WelcomeHeader.Size = UDim2.new(1, 0, 0, 22)
+WelcomeHeader.Size = UDim2.new(1, 0, 0, 20)
 WelcomeHeader.BackgroundTransparency = 1
 WelcomeHeader.Parent = TitleSection
 
 local WelcomeSub = Instance.new("TextLabel")
 WelcomeSub.Name = "WelcomeSub"
-WelcomeSub.Text = "FlowAuth Protected Gateway • 24h Free Key"
+WelcomeSub.Text = "FlowAuth Protected • 24-Hour Free Access Pass"
 WelcomeSub.Font = Enum.Font.GothamMedium
 WelcomeSub.TextSize = 10.5
 WelcomeSub.TextColor3 = Color3.fromRGB(148, 163, 184)
 WelcomeSub.TextXAlignment = Enum.TextXAlignment.Left
-WelcomeSub.Position = UDim2.new(0, 0, 0, 22)
+WelcomeSub.Position = UDim2.new(0, 0, 0, 20)
 WelcomeSub.Size = UDim2.new(1, 0, 0, 14)
 WelcomeSub.BackgroundTransparency = 1
 WelcomeSub.Parent = TitleSection
 
--- Explain Section (Steps 1, 2, 3)
-local ExplainSection = Instance.new("Frame")
-ExplainSection.Name = "ExplainSection"
-ExplainSection.Size = UDim2.new(1, 0, 0, 0)
-ExplainSection.AutomaticSize = Enum.AutomaticSize.Y
-ExplainSection.BackgroundTransparency = 1
-ExplainSection.LayoutOrder = 3
-ExplainSection.Parent = Content
+-- Stepper Progress Bar (Step 1, 2, 3)
+local Stepper = Instance.new("Frame")
+Stepper.Name = "Stepper"
+Stepper.Size = UDim2.new(1, 0, 0, 26)
+Stepper.BackgroundColor3 = Color3.fromRGB(16, 20, 31)
+Stepper.BorderSizePixel = 0
+Stepper.LayoutOrder = 3
+Stepper.Parent = Content
 
-local ExplainLayout = Instance.new("UIListLayout")
-ExplainLayout.SortOrder = Enum.SortOrder.LayoutOrder
-ExplainLayout.Padding = UDim.new(0, 4)
-ExplainLayout.Parent = ExplainSection
+local StepperCorner = Instance.new("UICorner")
+StepperCorner.CornerRadius = UDim.new(0, 8)
+StepperCorner.Parent = Stepper
 
-local function CreateStep(num, titleText)
-    local StepRow = Instance.new("Frame")
-    StepRow.Name = "StepRow"
-    StepRow.Size = UDim2.new(1, 0, 0, 17)
-    StepRow.BackgroundTransparency = 1
-    StepRow.Parent = ExplainSection
+local StepperStroke = Instance.new("UIStroke")
+StepperStroke.Thickness = 1
+StepperStroke.Color = Color3.fromRGB(35, 43, 62)
+StepperStroke.Parent = Stepper
 
-    local NumCircle = Instance.new("Frame")
-    NumCircle.Name = "NumCircle"
-    NumCircle.Size = UDim2.new(0, 16, 0, 16)
-    NumCircle.Position = UDim2.new(0, 0, 0.5, -8)
-    NumCircle.BackgroundColor3 = Color3.fromRGB(20, 28, 44)
-    NumCircle.BorderSizePixel = 0
-    NumCircle.Parent = StepRow
+local StepperLayout = Instance.new("UIListLayout")
+StepperLayout.FillDirection = Enum.FillDirection.Horizontal
+StepperLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+StepperLayout.VerticalAlignment = Enum.VerticalAlignment.Center
+StepperLayout.Padding = UDim.new(0, 6)
+StepperLayout.Parent = Stepper
 
-    local NumCorner = Instance.new("UICorner")
-    NumCorner.CornerRadius = UDim.new(1, 0)
-    NumCorner.Parent = NumCircle
+local function CreateStepChip(num, label)
+    local Chip = Instance.new("Frame")
+    Chip.Size = UDim2.new(0.31, 0, 1, 0)
+    Chip.BackgroundTransparency = 1
+    Chip.Parent = Stepper
 
-    local NumStroke = Instance.new("UIStroke")
-    NumStroke.Thickness = 1
-    NumStroke.Color = Color3.fromRGB(56, 189, 248)
-    NumStroke.Transparency = 0.5
-    NumStroke.Parent = NumCircle
+    local ChipLayout = Instance.new("UIListLayout")
+    ChipLayout.FillDirection = Enum.FillDirection.Horizontal
+    ChipLayout.VerticalAlignment = Enum.VerticalAlignment.Center
+    ChipLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+    ChipLayout.Padding = UDim.new(0, 4)
+    ChipLayout.Parent = Chip
 
-    local NumLabel = Instance.new("TextLabel")
-    NumLabel.Name = "NumLabel"
-    NumLabel.Text = tostring(num)
-    NumLabel.Font = Enum.Font.GothamBold
-    NumLabel.TextSize = 9.5
-    NumLabel.TextColor3 = Color3.fromRGB(56, 189, 248)
-    NumLabel.Size = UDim2.new(1, 0, 1, 0)
-    NumLabel.BackgroundTransparency = 1
-    NumLabel.Parent = NumCircle
+    local Dot = Instance.new("Frame")
+    Dot.Size = UDim2.new(0, 14, 0, 14)
+    Dot.BackgroundColor3 = Color3.fromRGB(139, 92, 246)
+    Dot.BackgroundTransparency = 0.25
+    Dot.BorderSizePixel = 0
+    Dot.Parent = Chip
 
-    local StepLabel = Instance.new("TextLabel")
-    StepLabel.Name = "StepLabel"
-    StepLabel.Text = titleText
-    StepLabel.Font = Enum.Font.GothamMedium
-    StepLabel.TextSize = 11
-    StepLabel.TextColor3 = Color3.fromRGB(226, 232, 240)
-    StepLabel.TextXAlignment = Enum.TextXAlignment.Left
-    StepLabel.Position = UDim2.new(0, 24, 0, 0)
-    StepLabel.Size = UDim2.new(1, -24, 1, 0)
-    StepLabel.BackgroundTransparency = 1
-    StepLabel.Parent = StepRow
+    local DotCorner = Instance.new("UICorner")
+    DotCorner.CornerRadius = UDim.new(1, 0)
+    DotCorner.Parent = Dot
+
+    local DotText = Instance.new("TextLabel")
+    DotText.Text = tostring(num)
+    DotText.Font = Enum.Font.GothamBold
+    DotText.TextSize = 8.5
+    DotText.TextColor3 = Color3.fromRGB(255, 255, 255)
+    DotText.Size = UDim2.new(1, 0, 1, 0)
+    DotText.BackgroundTransparency = 1
+    DotText.Parent = Dot
+
+    local Text = Instance.new("TextLabel")
+    Text.Text = label
+    Text.Font = Enum.Font.GothamMedium
+    Text.TextSize = 9.5
+    Text.TextColor3 = Color3.fromRGB(203, 213, 225)
+    Text.AutomaticSize = Enum.AutomaticSize.X
+    Text.Size = UDim2.new(0, 0, 1, 0)
+    Text.BackgroundTransparency = 1
+    Text.Parent = Chip
 end
 
-CreateStep(1, "Choose your key checkpoint link below")
-CreateStep(2, "Complete the quick ad verification in browser")
-CreateStep(3, "Paste key & click Valid Key to launch!!")
+CreateStepChip(1, "Get Link")
+CreateStepChip(2, "Complete")
+CreateStepChip(3, "Launch")
 
--- Tab / Provider Section
-local TabSection = Instance.new("Frame")
-TabSection.Name = "TabSection"
-TabSection.Size = UDim2.new(1, 0, 0, 0)
-TabSection.AutomaticSize = Enum.AutomaticSize.Y
-TabSection.BackgroundTransparency = 1
-TabSection.LayoutOrder = 4
-TabSection.Parent = Content
-
-local TabLayout = Instance.new("UIListLayout")
-TabLayout.FillDirection = Enum.FillDirection.Horizontal
-TabLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
-TabLayout.SortOrder = Enum.SortOrder.LayoutOrder
-TabLayout.Padding = UDim.new(0, 6)
-TabLayout.Parent = TabSection
-
+-- Toast Notification Helper
 local function ShowToast(text, isError)
     pcall(function()
         if Holder:FindFirstChild("KeyToast") then
@@ -475,17 +561,23 @@ local function ShowToast(text, isError)
         local Toast = Instance.new("Frame")
         Toast.Name = "KeyToast"
         Toast.AnchorPoint = Vector2.new(0.5, 1)
-        Toast.Position = UDim2.new(0.5, 0, 1, -8)
-        Toast.Size = UDim2.new(1, -28, 0, 30)
+        Toast.Position = UDim2.new(0.5, 0, 1, 15)
+        Toast.Size = UDim2.new(1, -28, 0, 32)
         Toast.BackgroundColor3 = isError and Color3.fromRGB(239, 68, 68) or Color3.fromRGB(16, 185, 129)
-        Toast.BackgroundTransparency = 0.15
+        Toast.BackgroundTransparency = 0.12
         Toast.BorderSizePixel = 0
-        Toast.ZIndex = 10
+        Toast.ZIndex = 20
         Toast.Parent = Holder
 
         local ToastCorner = Instance.new("UICorner")
         ToastCorner.CornerRadius = UDim.new(0, 9)
         ToastCorner.Parent = Toast
+
+        local ToastStroke = Instance.new("UIStroke")
+        ToastStroke.Thickness = 1
+        ToastStroke.Color = Color3.fromRGB(255, 255, 255)
+        ToastStroke.Transparency = 0.65
+        ToastStroke.Parent = Toast
 
         local ToastLabel = Instance.new("TextLabel")
         ToastLabel.Name = "ToastLabel"
@@ -495,15 +587,17 @@ local function ShowToast(text, isError)
         ToastLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
         ToastLabel.Size = UDim2.new(1, 0, 1, 0)
         ToastLabel.BackgroundTransparency = 1
-        ToastLabel.ZIndex = 11
+        ToastLabel.ZIndex = 21
         ToastLabel.Parent = Toast
 
-        TweenService:Create(Toast, TweenInfo.new(0.2), { Position = UDim2.new(0.5, 0, 1, -10) }):Play()
+        TweenService:Create(Toast, TweenInfo.new(0.22, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+            Position = UDim2.new(0.5, 0, 1, -10)
+        }):Play()
 
         task.delay(2.6, function()
             if Toast and Toast.Parent then
-                local tw = TweenService:Create(Toast, TweenInfo.new(0.25), {
-                    Position = UDim2.new(0.5, 0, 1, 10),
+                local tw = TweenService:Create(Toast, TweenInfo.new(0.22, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
+                    Position = UDim2.new(0.5, 0, 1, 15),
                     BackgroundTransparency = 1
                 })
                 tw:Play()
@@ -515,36 +609,52 @@ local function ShowToast(text, isError)
     end)
 end
 
-local function CreateProviderTab(name, iconId, url, order)
+-- Provider Tabs Section (Linkvertise, LootLabs, FlowAuth)
+local TabSection = Instance.new("Frame")
+TabSection.Name = "TabSection"
+TabSection.Size = UDim2.new(1, 0, 0, 34)
+TabSection.BackgroundTransparency = 1
+TabSection.LayoutOrder = 4
+TabSection.Parent = Content
+
+local TabLayout = Instance.new("UIListLayout")
+TabLayout.FillDirection = Enum.FillDirection.Horizontal
+TabLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+TabLayout.SortOrder = Enum.SortOrder.LayoutOrder
+TabLayout.Padding = UDim.new(0, 7)
+TabLayout.Parent = TabSection
+
+local function CreateProviderTab(name, iconId, badgeColor, url, order)
     local TabBtn = Instance.new("TextButton")
     TabBtn.Name = name .. "Tab"
     TabBtn.Text = ""
-    TabBtn.Size = UDim2.new(0.315, -4, 0, 30)
-    TabBtn.BackgroundColor3 = Color3.fromRGB(18, 22, 34)
+    TabBtn.Size = UDim2.new(0.315, -2, 1, 0)
+    TabBtn.BackgroundColor3 = Color3.fromRGB(16, 20, 32)
     TabBtn.BorderSizePixel = 0
     TabBtn.LayoutOrder = order
+    TabBtn.AutoButtonColor = false
     TabBtn.Parent = TabSection
 
     local TabCorner = Instance.new("UICorner")
-    TabCorner.CornerRadius = UDim.new(0, 9)
+    TabCorner.CornerRadius = UDim.new(0, 10)
     TabCorner.Parent = TabBtn
 
     local TabStroke = Instance.new("UIStroke")
     TabStroke.Thickness = 1
-    TabStroke.Color = Color3.fromRGB(45, 55, 80)
+    TabStroke.Color = Color3.fromRGB(38, 48, 72)
     TabStroke.Parent = TabBtn
 
-    local Row = Instance.new("Frame")
-    Row.Size = UDim2.new(1, 0, 1, 0)
-    Row.BackgroundTransparency = 1
-    Row.Parent = TabBtn
+    local TabContent = Instance.new("Frame")
+    TabContent.Size = UDim2.new(1, 0, 1, 0)
+    TabContent.BackgroundTransparency = 1
+    TabContent.Parent = TabBtn
 
     local RowLayout = Instance.new("UIListLayout")
     RowLayout.FillDirection = Enum.FillDirection.Horizontal
     RowLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
     RowLayout.VerticalAlignment = Enum.VerticalAlignment.Center
     RowLayout.Padding = UDim.new(0, 5)
-    RowLayout.Parent = Row
+    RowLayout.Parent = TabContent
 
     if iconId and #iconId > 0 then
         local Icon = Instance.new("ImageLabel")
@@ -552,25 +662,39 @@ local function CreateProviderTab(name, iconId, url, order)
         Icon.Size = UDim2.new(0, 16, 0, 16)
         Icon.BackgroundTransparency = 1
         Icon.Image = iconId
-        Icon.Parent = Row
+        Icon.ScaleType = Enum.ScaleType.Fit
+        Icon.Parent = TabContent
     end
 
     local Label = Instance.new("TextLabel")
     Label.Name = "Label"
     Label.Text = name
     Label.Font = Enum.Font.GothamBold
-    Label.TextSize = 11
+    Label.TextSize = 10.5
     Label.TextColor3 = Color3.fromRGB(255, 255, 255)
     Label.AutomaticSize = Enum.AutomaticSize.X
     Label.Size = UDim2.new(0, 0, 1, 0)
     Label.BackgroundTransparency = 1
-    Label.Parent = Row
+    Label.Parent = TabContent
 
+    -- Hover & Click Tweens
+    TabBtn.MouseEnter:Connect(function()
+        TweenService:Create(TabBtn, TweenInfo.new(0.18), { BackgroundColor3 = Color3.fromRGB(24, 30, 48) }):Play()
+        TweenService:Create(TabStroke, TweenInfo.new(0.18), { Color = badgeColor }):Play()
+    end)
+    TabBtn.MouseLeave:Connect(function()
+        TweenService:Create(TabBtn, TweenInfo.new(0.18), { BackgroundColor3 = Color3.fromRGB(16, 20, 32) }):Play()
+        TweenService:Create(TabStroke, TweenInfo.new(0.18), { Color = Color3.fromRGB(38, 48, 72) }):Play()
+    end)
     TabBtn.MouseButton1Click:Connect(function()
+        TweenService:Create(TabBtn, TweenInfo.new(0.08), { Size = UDim2.new(0.315, -4, 0.94, 0) }):Play()
+        task.delay(0.08, function()
+            TweenService:Create(TabBtn, TweenInfo.new(0.12), { Size = UDim2.new(0.315, -2, 1, 0) }):Play()
+        end)
         pcall(function()
             if setclipboard then
                 setclipboard(url)
-                ShowToast("✓ " .. name .. " Link Copied!", false)
+                ShowToast("✓ " .. name .. " link copied!", false)
                 SystemNotify("Mellow Hub", name .. " link copied! Complete in browser.", 3)
             else
                 ShowToast("Copy failed: " .. url, true)
@@ -579,11 +703,11 @@ local function CreateProviderTab(name, iconId, url, order)
     end)
 end
 
-CreateProviderTab("Linkvertise", CONFIG.LinkvertiseImg, CONFIG.GetKeyUrl, 1)
-CreateProviderTab("LootLabs", CONFIG.LootLabsImg, CONFIG.RewardUrl, 2)
-CreateProviderTab("FlowAuth", CONFIG.MellowLogo, CONFIG.GetKeyUrl, 3)
+CreateProviderTab("Linkvertise", CONFIG.LinkvertiseImg, Color3.fromRGB(249, 115, 22), CONFIG.GetKeyUrl, 1)
+CreateProviderTab("LootLabs", CONFIG.LootLabsImg, Color3.fromRGB(16, 185, 129), CONFIG.RewardUrl, 2)
+CreateProviderTab("FlowAuth", CONFIG.MellowLogo, Color3.fromRGB(139, 92, 246), CONFIG.GetKeyUrl, 3)
 
--- Key Section
+-- Key Input Section
 local KeySection = Instance.new("Frame")
 KeySection.Name = "KeySection"
 KeySection.Size = UDim2.new(1, 0, 0, 0)
@@ -594,40 +718,40 @@ KeySection.Parent = Content
 
 local KeySectionLayout = Instance.new("UIListLayout")
 KeySectionLayout.SortOrder = Enum.SortOrder.LayoutOrder
-KeySectionLayout.Padding = UDim.new(0, 4)
+KeySectionLayout.Padding = UDim.new(0, 5)
 KeySectionLayout.Parent = KeySection
 
 local KeySectionTitle = Instance.new("TextLabel")
 KeySectionTitle.Name = "KeySectionTitle"
-KeySectionTitle.Text = "Put Key Here"
+KeySectionTitle.Text = "ENTER ACCESS KEY"
 KeySectionTitle.Font = Enum.Font.GothamBold
-KeySectionTitle.TextSize = 12
-KeySectionTitle.TextColor3 = Color3.fromRGB(203, 213, 225)
+KeySectionTitle.TextSize = 10
+KeySectionTitle.TextColor3 = Color3.fromRGB(148, 163, 184)
 KeySectionTitle.TextXAlignment = Enum.TextXAlignment.Left
-KeySectionTitle.Size = UDim2.new(1, 0, 0, 15)
+KeySectionTitle.Size = UDim2.new(1, 0, 0, 14)
 KeySectionTitle.BackgroundTransparency = 1
 KeySectionTitle.Parent = KeySection
 
 local TextBar = Instance.new("Frame")
 TextBar.Name = "TextBar"
-TextBar.Size = UDim2.new(1, 0, 0, 36)
-TextBar.BackgroundColor3 = Color3.fromRGB(15, 18, 28)
+TextBar.Size = UDim2.new(1, 0, 0, 38)
+TextBar.BackgroundColor3 = Color3.fromRGB(14, 18, 28)
 TextBar.BorderSizePixel = 0
 TextBar.Parent = KeySection
 
 local TextBarCorner = Instance.new("UICorner")
-TextBarCorner.CornerRadius = UDim.new(0, 9)
+TextBarCorner.CornerRadius = UDim.new(0, 10)
 TextBarCorner.Parent = TextBar
 
 local TextBarStroke = Instance.new("UIStroke")
 TextBarStroke.Thickness = 1.2
-TextBarStroke.Color = Color3.fromRGB(45, 55, 82)
+TextBarStroke.Color = Color3.fromRGB(38, 48, 72)
 TextBarStroke.Parent = TextBar
 
 local KeyBox = Instance.new("TextBox")
 KeyBox.Name = "KeyBox"
-KeyBox.PlaceholderText = "Paste your 24h key here..."
-KeyBox.PlaceholderColor3 = Color3.fromRGB(100, 116, 139)
+KeyBox.PlaceholderText = "Paste 24h key here..."
+KeyBox.PlaceholderColor3 = Color3.fromRGB(80, 95, 120)
 KeyBox.Text = ""
 KeyBox.Font = Enum.Font.GothamMedium
 KeyBox.TextSize = 11.5
@@ -639,20 +763,36 @@ KeyBox.BackgroundTransparency = 1
 KeyBox.ClearTextOnFocus = false
 KeyBox.Parent = TextBar
 
+-- Input Focus Glow
+KeyBox.Focused:Connect(function()
+    TweenService:Create(TextBarStroke, TweenInfo.new(0.2), {
+        Color = Color3.fromRGB(139, 92, 246),
+        Thickness = 1.4
+    }):Play()
+end)
+
+KeyBox.FocusLost:Connect(function()
+    TweenService:Create(TextBarStroke, TweenInfo.new(0.2), {
+        Color = Color3.fromRGB(38, 48, 72),
+        Thickness = 1.2
+    }):Play()
+end)
+
 local QuickPaste = Instance.new("TextButton")
 QuickPaste.Name = "QuickPaste"
 QuickPaste.Text = "📋 Paste"
 QuickPaste.Font = Enum.Font.GothamBold
 QuickPaste.TextSize = 10.5
 QuickPaste.TextColor3 = Color3.fromRGB(56, 189, 248)
-QuickPaste.Size = UDim2.new(0, 58, 0, 24)
-QuickPaste.Position = UDim2.new(1, -66, 0.5, -12)
-QuickPaste.BackgroundColor3 = Color3.fromRGB(20, 30, 48)
+QuickPaste.Size = UDim2.new(0, 60, 0, 26)
+QuickPaste.Position = UDim2.new(1, -68, 0.5, -13)
+QuickPaste.BackgroundColor3 = Color3.fromRGB(22, 32, 50)
 QuickPaste.BorderSizePixel = 0
+QuickPaste.AutoButtonColor = false
 QuickPaste.Parent = TextBar
 
 local QuickPasteCorner = Instance.new("UICorner")
-QuickPasteCorner.CornerRadius = UDim.new(0, 6)
+QuickPasteCorner.CornerRadius = UDim.new(0, 7)
 QuickPasteCorner.Parent = QuickPaste
 
 local QuickPasteStroke = Instance.new("UIStroke")
@@ -660,6 +800,13 @@ QuickPasteStroke.Thickness = 1
 QuickPasteStroke.Color = Color3.fromRGB(56, 189, 248)
 QuickPasteStroke.Transparency = 0.5
 QuickPasteStroke.Parent = QuickPaste
+
+QuickPaste.MouseEnter:Connect(function()
+    TweenService:Create(QuickPaste, TweenInfo.new(0.18), { BackgroundColor3 = Color3.fromRGB(30, 44, 70) }):Play()
+end)
+QuickPaste.MouseLeave:Connect(function()
+    TweenService:Create(QuickPaste, TweenInfo.new(0.18), { BackgroundColor3 = Color3.fromRGB(22, 32, 50) }):Play()
+end)
 
 QuickPaste.MouseButton1Click:Connect(function()
     pcall(function()
@@ -683,7 +830,7 @@ pcall(function()
     end
 end)
 
--- Check Section
+-- Submit Section
 local CheckSection = Instance.new("Frame")
 CheckSection.Name = "CheckSection"
 CheckSection.Size = UDim2.new(1, 0, 0, 0)
@@ -700,62 +847,97 @@ CheckLayout.Parent = CheckSection
 
 local SubmitBtnHolder = Instance.new("Frame")
 SubmitBtnHolder.Name = "SubmitBtnHolder"
-SubmitBtnHolder.Size = UDim2.new(1, 0, 0, 38)
-SubmitBtnHolder.BackgroundColor3 = Color3.fromRGB(14, 165, 233)
+SubmitBtnHolder.Size = UDim2.new(1, 0, 0, 42)
+SubmitBtnHolder.BackgroundColor3 = Color3.fromRGB(139, 92, 246)
 SubmitBtnHolder.BorderSizePixel = 0
 SubmitBtnHolder.Parent = CheckSection
 
 local SubmitCorner = Instance.new("UICorner")
-SubmitCorner.CornerRadius = UDim.new(0, 10)
+SubmitCorner.CornerRadius = UDim.new(0, 11)
 SubmitCorner.Parent = SubmitBtnHolder
 
 local SubmitGradient = Instance.new("UIGradient")
 SubmitGradient.Color = ColorSequence.new({
-    ColorSequenceKeypoint.new(0, Color3.fromRGB(14, 165, 233)),
-    ColorSequenceKeypoint.new(1, Color3.fromRGB(139, 92, 246))
+    ColorSequenceKeypoint.new(0.0, Color3.fromRGB(147, 51, 234)),
+    ColorSequenceKeypoint.new(0.5, Color3.fromRGB(124, 58, 237)),
+    ColorSequenceKeypoint.new(1.0, Color3.fromRGB(6, 182, 212))
 })
-SubmitGradient.Rotation = 45
+SubmitGradient.Rotation = 25
 SubmitGradient.Parent = SubmitBtnHolder
+
+local SubmitStroke = Instance.new("UIStroke")
+SubmitStroke.Thickness = 1.2
+SubmitStroke.Color = Color3.fromRGB(192, 132, 252)
+SubmitStroke.Transparency = 0.4
+SubmitStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+SubmitStroke.Parent = SubmitBtnHolder
 
 local GlowImage = Instance.new("ImageLabel")
 GlowImage.Name = "GlowImage"
 GlowImage.AnchorPoint = Vector2.new(0.5, 0.5)
 GlowImage.Position = UDim2.new(0.5, 0, 0.5, 0)
-GlowImage.Size = UDim2.new(1.08, 0, 1.8, 0)
+GlowImage.Size = UDim2.new(1.15, 0, 1.8, 0)
 GlowImage.BackgroundTransparency = 1
 GlowImage.Image = CONFIG.GlowAsset
-GlowImage.ImageColor3 = Color3.fromRGB(56, 189, 248)
-GlowImage.ImageTransparency = 0.75
+GlowImage.ImageColor3 = Color3.fromRGB(139, 92, 246)
+GlowImage.ImageTransparency = 0.72
 GlowImage.ZIndex = 0
 GlowImage.Parent = SubmitBtnHolder
 
 local SubmitBtn = Instance.new("TextButton")
 SubmitBtn.Name = "SubmitBtn"
-SubmitBtn.Text = "🚀 Valid Key & Launch"
+SubmitBtn.Text = "⚡ Verify Key & Launch"
 SubmitBtn.Font = Enum.Font.GothamBold
 SubmitBtn.TextSize = 13.5
 SubmitBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
 SubmitBtn.Size = UDim2.new(1, 0, 1, 0)
 SubmitBtn.BackgroundTransparency = 1
 SubmitBtn.ZIndex = 2
+SubmitBtn.AutoButtonColor = false
 SubmitBtn.Parent = SubmitBtnHolder
 
-local SupportBtn = Instance.new("TextButton")
-SupportBtn.Name = "SupportBtn"
-SupportBtn.Text = "Need support? <font color=\"#818cf8\"><u>Join the Discord</u></font>"
-SupportBtn.RichText = true
-SupportBtn.Font = Enum.Font.GothamMedium
-SupportBtn.TextSize = 11
-SupportBtn.TextColor3 = Color3.fromRGB(148, 163, 184)
-SupportBtn.AutomaticSize = Enum.AutomaticSize.XY
-SupportBtn.BackgroundTransparency = 1
-SupportBtn.Parent = CheckSection
+SubmitBtn.MouseEnter:Connect(function()
+    TweenService:Create(SubmitBtnHolder, TweenInfo.new(0.18), { Size = UDim2.new(1.02, 0, 0, 44) }):Play()
+end)
+SubmitBtn.MouseLeave:Connect(function()
+    TweenService:Create(SubmitBtnHolder, TweenInfo.new(0.18), { Size = UDim2.new(1, 0, 0, 42) }):Play()
+end)
 
-SupportBtn.MouseButton1Click:Connect(function()
+-- Footer Support Row
+local SupportRow = Instance.new("Frame")
+SupportRow.Name = "SupportRow"
+SupportRow.Size = UDim2.new(1, 0, 0, 22)
+SupportRow.BackgroundTransparency = 1
+SupportRow.Parent = CheckSection
+
+local SupportRowLayout = Instance.new("UIListLayout")
+SupportRowLayout.FillDirection = Enum.FillDirection.Horizontal
+SupportRowLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+SupportRowLayout.VerticalAlignment = Enum.VerticalAlignment.Center
+SupportRowLayout.Padding = UDim.new(0, 12)
+SupportRowLayout.Parent = SupportRow
+
+local DiscordBtn = Instance.new("TextButton")
+DiscordBtn.Name = "DiscordBtn"
+DiscordBtn.Text = "💬 Join Discord (dc.gg/getmellow)"
+DiscordBtn.Font = Enum.Font.GothamMedium
+DiscordBtn.TextSize = 10.5
+DiscordBtn.TextColor3 = Color3.fromRGB(148, 163, 184)
+DiscordBtn.AutomaticSize = Enum.AutomaticSize.XY
+DiscordBtn.BackgroundTransparency = 1
+DiscordBtn.Parent = SupportRow
+
+DiscordBtn.MouseEnter:Connect(function()
+    DiscordBtn.TextColor3 = Color3.fromRGB(88, 101, 242)
+end)
+DiscordBtn.MouseLeave:Connect(function()
+    DiscordBtn.TextColor3 = Color3.fromRGB(148, 163, 184)
+end)
+DiscordBtn.MouseButton1Click:Connect(function()
     pcall(function()
         if setclipboard then
             setclipboard(CONFIG.DiscordUrl)
-            ShowToast("✓ Discord link copied: dc.gg/getmellow", false)
+            ShowToast("✓ Discord link copied to clipboard!", false)
             SystemNotify("Mellow Hub", "Discord link copied to clipboard!", 3)
         end
     end)
@@ -784,7 +966,7 @@ SubmitBtn.MouseButton1Click:Connect(function()
         ShakeInput()
         TweenService:Create(TextBarStroke, TweenInfo.new(0.2), { Color = Color3.fromRGB(239, 68, 68) }):Play()
         task.delay(1.5, function()
-            TweenService:Create(TextBarStroke, TweenInfo.new(0.2), { Color = Color3.fromRGB(45, 55, 82) }):Play()
+            TweenService:Create(TextBarStroke, TweenInfo.new(0.2), { Color = Color3.fromRGB(38, 48, 72) }):Play()
         end)
         return
     end
@@ -810,25 +992,25 @@ SubmitBtn.MouseButton1Click:Connect(function()
             ShowToast("✓ Key Valid! Launching Mellow Hub...", false)
             SystemNotify("Mellow Hub", "Authentication successful! Launching script...", 3)
 
-            task.wait(0.6)
-            TweenService:Create(Holder, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
+            task.wait(0.55)
+            TweenService:Create(Holder, TweenInfo.new(0.28, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
                 Size = UDim2.new(0, HolderWidth * 0.85, 0, 0),
                 BackgroundTransparency = 1
             }):Play()
-            TweenService:Create(Backdrop, TweenInfo.new(0.3), { BackgroundTransparency = 1 }):Play()
+            TweenService:Create(Backdrop, TweenInfo.new(0.28), { BackgroundTransparency = 1 }):Play()
 
-            task.delay(0.35, function()
+            task.delay(0.32, function()
                 KeyGui:Destroy()
                 LaunchHub()
             end)
         else
             isSubmitting = false
-            SubmitBtn.Text = "🚀 Valid Key & Launch"
+            SubmitBtn.Text = "⚡ Verify Key & Launch"
             ShowToast("❌ " .. (msg ~= "" and msg or "Invalid Key!"), true)
             ShakeInput()
             TweenService:Create(TextBarStroke, TweenInfo.new(0.2), { Color = Color3.fromRGB(239, 68, 68) }):Play()
             task.delay(2, function()
-                TweenService:Create(TextBarStroke, TweenInfo.new(0.2), { Color = Color3.fromRGB(45, 55, 82) }):Play()
+                TweenService:Create(TextBarStroke, TweenInfo.new(0.2), { Color = Color3.fromRGB(38, 48, 72) }):Play()
             end)
         end
     end)
@@ -839,10 +1021,10 @@ Holder.Size = UDim2.new(0, HolderWidth * 0.85, 0, 0)
 Holder.BackgroundTransparency = 1
 Backdrop.BackgroundTransparency = 1
 
-TweenService:Create(Backdrop, TweenInfo.new(0.25), { BackgroundTransparency = 0.5 }):Play()
-TweenService:Create(Holder, TweenInfo.new(0.35, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
+TweenService:Create(Backdrop, TweenInfo.new(0.25), { BackgroundTransparency = 0.45 }):Play()
+TweenService:Create(Holder, TweenInfo.new(0.38, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
     Size = UDim2.new(0, HolderWidth, 0, 0),
     BackgroundTransparency = 0.04
 }):Play()
 
-print("[Mellow Hub] Key System (v2.5) loaded.")
+print("[Mellow Hub] Key System (v2.5) Luxury Edition loaded successfully.")

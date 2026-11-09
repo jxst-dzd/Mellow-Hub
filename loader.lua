@@ -42,8 +42,20 @@ end
 local function OpenKeySystem()
     print("[Mellow Hub] Opening Key System UI...")
     Notify("Mellow Hub", "Key required! Opening Key System...", 4)
-    
-    -- 1. Try local file if available in executor (Potassium/offline dev)
+
+    -- 1. Try official high-speed Vercel CDN (always fresh with cache buster)
+    local okVercel, errVercel = pcall(function()
+        local s = game:HttpGet(CONFIG.KeySystemRaw .. "?t=" .. tostring(os.time()))
+        local fn, compileErr = loadstring(s)
+        if fn then
+            fn()
+        else
+            error(compileErr or "Failed to compile keysystem from Vercel")
+        end
+    end)
+    if okVercel then return end
+
+    -- 2. Try local file if available in executor (Potassium/offline dev)
     if isfile and isfile("Mellow Hub/Key Systems/Key Systems.lua") then
         local ok, _ = pcall(function()
             local fn = loadfile("Mellow Hub/Key Systems/Key Systems.lua")
@@ -59,18 +71,6 @@ local function OpenKeySystem()
         end)
         if ok then return end
     end
-
-    -- 2. Try official high-speed Vercel CDN (with cache buster)
-    local okVercel, errVercel = pcall(function()
-        local s = game:HttpGet(CONFIG.KeySystemRaw .. "?t=" .. tostring(os.time()))
-        local fn, compileErr = loadstring(s)
-        if fn then
-            fn()
-        else
-            error(compileErr or "Failed to compile keysystem from Vercel")
-        end
-    end)
-    if okVercel then return end
 
     -- 3. GitHub raw fallback (main branch)
     local okGit, errGit = pcall(function()

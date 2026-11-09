@@ -43,3 +43,4 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/jxst-dzd/Mellow-Hub/m
 Get your 24h key instantly from:
 - [FlowAuth Key Gateway](https://flowauth.net/getkey?project_id=9bfa926772e8b1e2f31f67cd4dc4e7ab)
 - Keys are automatically cached to `MellowHub/Key.txt` for 24 hours of uninterrupted gameplay!
+
