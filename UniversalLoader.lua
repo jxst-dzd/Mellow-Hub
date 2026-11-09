@@ -9,8 +9,14 @@
     ════════════════════════════════════════════════════════════════════════════
 --]]
 
+-- Safe wait for game load with timeout (prevents indefinite hanging)
 if not game:IsLoaded() then
-    pcall(function() game.Loaded:Wait() end)
+    local startWait = tick()
+    pcall(function()
+        while not game:IsLoaded() and (tick() - startWait < 15) do
+            task.wait(0.2)
+        end
+    end)
 end
 
 local Players = game:GetService("Players")
@@ -44,7 +50,7 @@ local function OpenKeySystem()
     Notify("Mellow Hub", "Key required! Opening Key System...", 4)
 
     -- 1. Try official high-speed Vercel CDN (always fresh with cache buster)
-    local okVercel, errVercel = pcall(function()
+    local okVercel, _ = pcall(function()
         local s = game:HttpGet(CONFIG.KeySystemRaw .. "?t=" .. tostring(os.time()))
         local fn, compileErr = loadstring(s)
         if fn then
@@ -73,7 +79,7 @@ local function OpenKeySystem()
     end
 
     -- 3. GitHub raw fallback (main branch)
-    local okGit, errGit = pcall(function()
+    local okGit, _ = pcall(function()
         local s = game:HttpGet(CONFIG.KeySystemGit .. "?t=" .. tostring(os.time()))
         local fn, compileErr = loadstring(s)
         if fn then
@@ -90,6 +96,17 @@ local function OpenKeySystem()
         local fn, compileErr = loadstring(s)
         if fn then fn() end
     end)
+end
+
+-- Helper to purge invalid or expired cached keys
+local function InvalidateKey()
+    pcall(function()
+        if isfile and isfile(CONFIG.KeySavePath) then
+            delfile(CONFIG.KeySavePath)
+        end
+    end)
+    getgenv().script_key = nil
+    _G.script_key = nil
 end
 
 -- Read cached key or environment key
@@ -114,9 +131,11 @@ currentKey = string.gsub(currentKey, "%s+", "")
 getgenv().script_key = currentKey
 _G.script_key = currentKey
 
--- Game mapping database
+-- Game mapping database (by PlaceId and GameId/UniverseId)
 local placeId = game.PlaceId
-local GameLoaders = {
+local gameId = game.GameId
+
+local GameLoadersByPlace = {
     [87039211657390]  = { Name = "Arise: Crossover", Loader = "https://flowauth.net/v1/loaders/8ca841c1157f170b84ef0567d3579b05.lua", Local = "Mellow Hub/Games/Arise Crossover/Script/Main Arise Crossover.lua" },
     [131716211654599] = { Name = "Fisch", Loader = "https://flowauth.net/v1/loaders/fa5ee95712f7a820e8041dde2fe9906a.lua", Local = "Mellow Hub/Games/Fisch/Script/Main Fisch.lua" },
     [16732694052]     = { Name = "Fisch (Legacy)", Loader = "https://flowauth.net/v1/loaders/fa5ee95712f7a820e8041dde2fe9906a.lua" },
@@ -124,7 +143,24 @@ local GameLoaders = {
     [17387122165]     = { Name = "Murder Arena (Legacy)", Loader = "https://flowauth.net/v1/loaders/c45785eb88ed947f15998d22b7857d37.lua" },
 }
 
-local target = GameLoaders[placeId]
+local GameLoadersByUniverse = {
+    [7074860883] = GameLoadersByPlace[87039211657390],   -- Arise Crossover
+    [6325997262] = GameLoadersByPlace[131716211654599],  -- Fisch
+    [6463935272] = GameLoadersByPlace[111475355188494],  -- Murder Arena
+}
+
+local target = GameLoadersByPlace[placeId] or GameLoadersByUniverse[gameId]
+
+local function isKeyError(err)
+    if not err then return false end
+    local errStr = string.lower(tostring(err))
+    return string.find(errStr, "premium")
+        or string.find(errStr, "invalid")
+        or string.find(errStr, "expired")
+        or string.find(errStr, "flowauth")
+        or string.find(errStr, "key")
+        or string.find(errStr, "hwid")
+end
 
 local function ExecuteScript()
     if target then
@@ -143,14 +179,14 @@ local function ExecuteScript()
         
         -- 2. Project FlowAuth Loader fallback
         if not success then
-            local errStr = tostring(err)
-            if string.find(errStr, "premium_required") or string.find(errStr, "invalid_key") then
-                print("[Mellow Hub] Key verification failed. Reopening Key System...")
+            if isKeyError(err) then
+                print("[Mellow Hub] Key invalid/expired (" .. tostring(err) .. "). Purging and opening Key System...")
+                InvalidateKey()
                 OpenKeySystem()
                 return
             end
             
-            warn("[Mellow Hub] Game loader failed, trying project loader: " .. errStr)
+            warn("[Mellow Hub] Game loader failed, trying project loader: " .. tostring(err))
             success, err = pcall(function()
                 local s = game:HttpGet("https://flowauth.net/v1/loaders/" .. CONFIG.ProjectHash .. ".lua")
                 local fn, compileErr = loadstring(s)
@@ -170,10 +206,14 @@ local function ExecuteScript()
         end
 
         if not success then
-            local errStr = tostring(err)
-            if string.find(errStr, "premium_required") or string.find(errStr, "invalid_key") then
-                OpenKeySystem()
+            print("[Mellow Hub] Execution failed: " .. tostring(err))
+            if isKeyError(err) then
+                InvalidateKey()
             end
+            OpenKeySystem()
+        else
+            getgenv().MELLOW_HUB_LOADED = true
+            _G.MELLOW_HUB_LOADED = true
         end
     else
         -- Place not recognized: load project loader or notify
@@ -187,12 +227,15 @@ local function ExecuteScript()
             end
         end)
         if not success then
-            local errStr = tostring(err)
-            if string.find(errStr, "premium_required") or string.find(errStr, "invalid_key") then
+            if isKeyError(err) then
+                InvalidateKey()
                 OpenKeySystem()
             else
                 Notify("Mellow Hub", "Game not supported yet! Join Discord to request games: dc.gg/getmellow", 6)
             end
+        else
+            getgenv().MELLOW_HUB_LOADED = true
+            _G.MELLOW_HUB_LOADED = true
         end
     end
 end

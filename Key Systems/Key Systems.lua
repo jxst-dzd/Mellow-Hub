@@ -51,16 +51,25 @@ end
 
 -- Loader execution helper
 local function LaunchHub()
+    if getgenv().MELLOW_HUB_LOADED or _G.MELLOW_HUB_LOADED then
+        print("[Mellow Hub] Script already running, skipping duplicate launch.")
+        return true
+    end
     print("[Mellow Hub] Launching game script...")
     
     if isfile and isfile("Mellow Hub/Loader/Loader.lua") then
         local success, _ = pcall(function()
             loadfile("Mellow Hub/Loader/Loader.lua")()
         end)
-        if success then return true end
+        if success then
+            getgenv().MELLOW_HUB_LOADED = true
+            _G.MELLOW_HUB_LOADED = true
+            return true
+        end
     end
 
     local placeId = game.PlaceId
+    local gameId = game.GameId
     local placeLoaders = {
         [87039211657390]  = "https://flowauth.net/v1/loaders/8ca841c1157f170b84ef0567d3579b05.lua",
         [131716211654599] = "https://flowauth.net/v1/loaders/fa5ee95712f7a820e8041dde2fe9906a.lua",
@@ -68,17 +77,31 @@ local function LaunchHub()
         [111475355188494] = "https://flowauth.net/v1/loaders/c45785eb88ed947f15998d22b7857d37.lua",
         [17387122165]     = "https://flowauth.net/v1/loaders/c45785eb88ed947f15998d22b7857d37.lua",
     }
+    local universeLoaders = {
+        [7074860883] = placeLoaders[87039211657390],
+        [6325997262] = placeLoaders[131716211654599],
+        [6463935272] = placeLoaders[111475355188494],
+    }
 
-    if placeLoaders[placeId] then
+    local targetLoader = placeLoaders[placeId] or universeLoaders[gameId]
+    if targetLoader then
         local okGame, _ = pcall(function()
-            loadstring(game:HttpGet(placeLoaders[placeId]))()
+            loadstring(game:HttpGet(targetLoader))()
         end)
-        if okGame then return true end
+        if okGame then
+            getgenv().MELLOW_HUB_LOADED = true
+            _G.MELLOW_HUB_LOADED = true
+            return true
+        end
     end
 
     local okProject, _ = pcall(function()
         loadstring(game:HttpGet(CONFIG.LoaderProject))()
     end)
+    if okProject then
+        getgenv().MELLOW_HUB_LOADED = true
+        _G.MELLOW_HUB_LOADED = true
+    end
     return okProject
 end
 
@@ -93,29 +116,38 @@ local function VerifyKeyWithFlowAuth(candidateKey)
     _G.script_key = candidateKey
 
     local placeId = game.PlaceId
+    local gameId = game.GameId
     local testUrl = CONFIG.LoaderProject
-    if placeId == 87039211657390 then
+    if placeId == 87039211657390 or gameId == 7074860883 then
         testUrl = "https://flowauth.net/v1/loaders/8ca841c1157f170b84ef0567d3579b05.lua"
-    elseif placeId == 131716211654599 or placeId == 16732694052 then
+    elseif placeId == 131716211654599 or placeId == 16732694052 or gameId == 6325997262 then
         testUrl = "https://flowauth.net/v1/loaders/fa5ee95712f7a820e8041dde2fe9906a.lua"
-    elseif placeId == 111475355188494 or placeId == 17387122165 then
+    elseif placeId == 111475355188494 or placeId == 17387122165 or gameId == 6463935272 then
         testUrl = "https://flowauth.net/v1/loaders/c45785eb88ed947f15998d22b7857d37.lua"
     end
 
     local success, result = pcall(function()
-        return loadstring(game:HttpGet(testUrl))()
+        local s = game:HttpGet(testUrl)
+        local fn, compileErr = loadstring(s)
+        if fn then
+            return fn()
+        else
+            error(compileErr or "Failed to compile loader")
+        end
     end)
 
     if success then
-        return true, "Key Accepted"
+        getgenv().MELLOW_HUB_LOADED = true
+        _G.MELLOW_HUB_LOADED = true
+        return true, "Key Accepted", true
     else
-        local errStr = tostring(result)
-        if string.find(errStr, "premium_required") or string.find(errStr, "invalid_key") or string.find(errStr, "expired") then
-            return false, "Invalid or expired key! Please get a new key."
+        local errStr = string.lower(tostring(result))
+        if string.find(errStr, "premium") or string.find(errStr, "invalid") or string.find(errStr, "expired") then
+            return false, "Invalid or expired key! Please get a new key.", false
         elseif string.find(errStr, "hwid") then
-            return false, "HWID mismatch! Please reset your key HWID in FlowAuth."
+            return false, "HWID mismatch! Please reset your key HWID in FlowAuth.", false
         else
-            return true, "Key Accepted"
+            return false, "Authentication failed: " .. string.sub(tostring(result), 1, 40), false
         end
     end
 end
@@ -976,7 +1008,7 @@ SubmitBtn.MouseButton1Click:Connect(function()
     ShowToast("Verifying with FlowAuth...", false)
 
     task.spawn(function()
-        local valid, msg = VerifyKeyWithFlowAuth(enteredKey)
+        local valid, msg, alreadyLaunched = VerifyKeyWithFlowAuth(enteredKey)
         if valid then
             pcall(function()
                 if makefolder and not isfolder(CONFIG.SaveDir) then
@@ -1001,7 +1033,9 @@ SubmitBtn.MouseButton1Click:Connect(function()
 
             task.delay(0.32, function()
                 KeyGui:Destroy()
-                LaunchHub()
+                if not alreadyLaunched then
+                    LaunchHub()
+                end
             end)
         else
             isSubmitting = false
