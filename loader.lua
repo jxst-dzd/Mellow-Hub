@@ -1,11 +1,11 @@
 --[[
     ════════════════════════════════════════════════════════════════════════════
-    MELLOW HUB — OFFICIAL UNIVERSAL LOADER (v2.5)
+    MELLOW HUB — OFFICIAL UNIVERSAL LOADER (v2.6)
     ════════════════════════════════════════════════════════════════════════════
     Gateway       : FlowAuth (Project ID: 7664)
     Official Site : https://mellow-hub-official.vercel.app
     Discord       : https://dc.gg/getmellow
-    Supported     : Arise Crossover, Fisch, Murder Arena
+    Supported     : Arise Crossover, Fisch, Murder Arena, Survive Your Ideas, Throw Food for Animals
     ════════════════════════════════════════════════════════════════════════════
 --]]
 
@@ -141,12 +141,17 @@ local GameLoadersByPlace = {
     [16732694052]     = { Name = "Fisch (Legacy)", Loader = "https://flowauth.net/v1/loaders/fa5ee95712f7a820e8041dde2fe9906a.lua" },
     [111475355188494] = { Name = "Murder Arena", Loader = "https://flowauth.net/v1/loaders/c45785eb88ed947f15998d22b7857d37.lua", Local = "Mellow Hub/Games/Murder Arena/Script/Main Murder Arena.lua" },
     [17387122165]     = { Name = "Murder Arena (Legacy)", Loader = "https://flowauth.net/v1/loaders/c45785eb88ed947f15998d22b7857d37.lua" },
+    [77900175935766]  = { Name = "Survive Your Ideas (Lobby)", Loader = "https://flowauth.net/v1/loaders/5e669577bc35836fd20632e4cd71fe54.lua", Local = "Mellow Hub/Games/Survive Your Ideas/Script/Survive Your Ideas.lua" },
+    [109001332046330] = { Name = "Survive Your Ideas (Arena)", Loader = "https://flowauth.net/v1/loaders/5e669577bc35836fd20632e4cd71fe54.lua", Local = "Mellow Hub/Games/Survive Your Ideas/Script/Survive Your Ideas.lua" },
+    [120219252362013] = { Name = "Throw Food for Animals", Loader = "https://flowauth.net/v1/loaders/f0d6865eec6ae57208bb9e00e494a1a4.lua", Local = "Mellow Hub/Games/Throw Food for Animals Game/Script/Main throw food for animals.lua" },
 }
 
 local GameLoadersByUniverse = {
-    [7074860883] = GameLoadersByPlace[87039211657390],   -- Arise Crossover
-    [6325997262] = GameLoadersByPlace[131716211654599],  -- Fisch
-    [6463935272] = GameLoadersByPlace[111475355188494],  -- Murder Arena
+    [7074860883]  = GameLoadersByPlace[87039211657390],   -- Arise Crossover
+    [6325997262]  = GameLoadersByPlace[131716211654599],  -- Fisch
+    [6463935272]  = GameLoadersByPlace[111475355188494],  -- Murder Arena
+    [10769671316] = GameLoadersByPlace[77900175935766],   -- Survive Your Ideas
+    [10766972131] = GameLoadersByPlace[120219252362013],  -- Throw Food for Animals
 }
 
 local target = GameLoadersByPlace[placeId] or GameLoadersByUniverse[gameId]
