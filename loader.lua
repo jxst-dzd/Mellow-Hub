@@ -5,7 +5,7 @@
     Gateway       : FlowAuth (Project ID: 7664)
     Official Site : https://mellow-hub-official.vercel.app
     Discord       : https://dc.gg/getmellow
-    Supported     : Arise Crossover, Fisch, Murder Arena, Survive Your Ideas, Throw Food for Animals
+    Supported     : Anime Adventures, Arise Crossover, Fisch, Murder Arena, Survive Your Ideas, Throw Food for Animals
     ════════════════════════════════════════════════════════════════════════════
 --]]
 
@@ -144,6 +144,8 @@ local GameLoadersByPlace = {
     [77900175935766]  = { Name = "Survive Your Ideas (Lobby)", Loader = "https://flowauth.net/v1/loaders/5e669577bc35836fd20632e4cd71fe54.lua", Local = "Mellow Hub/Games/Survive Your Ideas/Script/Survive Your Ideas.lua" },
     [109001332046330] = { Name = "Survive Your Ideas (Arena)", Loader = "https://flowauth.net/v1/loaders/5e669577bc35836fd20632e4cd71fe54.lua", Local = "Mellow Hub/Games/Survive Your Ideas/Script/Survive Your Ideas.lua" },
     [120219252362013] = { Name = "Throw Food for Animals", Loader = "https://flowauth.net/v1/loaders/f0d6865eec6ae57208bb9e00e494a1a4.lua", Local = "Mellow Hub/Games/Throw Food for Animals Game/Script/Main throw food for animals.lua" },
+    [8304191830]      = { Name = "Anime Adventures (Lobby)", Loader = "https://flowauth.net/v1/loaders/086ef34d1ec461daffe4f496bb4c347c.lua", Local = "Mellow Hub/Games/Anime Adventure/Script/Main Anime Adventure.lua" },
+    [14229839966]     = { Name = "Anime Adventures (Match)", Loader = "https://flowauth.net/v1/loaders/086ef34d1ec461daffe4f496bb4c347c.lua", Local = "Mellow Hub/Games/Anime Adventure/Script/Main Anime Adventure.lua" },
 }
 
 local GameLoadersByUniverse = {
@@ -152,6 +154,7 @@ local GameLoadersByUniverse = {
     [6463935272]  = GameLoadersByPlace[111475355188494],  -- Murder Arena
     [10769671316] = GameLoadersByPlace[77900175935766],   -- Survive Your Ideas
     [10766972131] = GameLoadersByPlace[120219252362013],  -- Throw Food for Animals
+    [3183403065]  = GameLoadersByPlace[8304191830],       -- Anime Adventures
 }
 
 local target = GameLoadersByPlace[placeId] or GameLoadersByUniverse[gameId]
